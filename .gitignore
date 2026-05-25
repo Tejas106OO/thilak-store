@@ -1,0 +1,6 @@
+# Git ignore file
+*.bak
+.DS_Store
+node_modules/
+.vscode/
+.idea/

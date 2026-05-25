@@ -124,9 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 6. Custom ID Request - Form Submit to WhatsApp Prefill Formatter
+    // 6. Custom ID Request - Form Submit to Instagram Prefill Formatter
     const customIdForm = document.getElementById('custom-id-form');
-    const whatsappAgencyNumber = '919876543210'; // Agency contact number
 
     if (customIdForm) {
         customIdForm.addEventListener('submit', (e) => {
@@ -148,32 +147,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const location = locationInput.value.trim();
             const requirements = document.getElementById('user-requirements').value.trim();
 
-            // Construct WhatsApp Message Template
-            let message = `*🔥 NEW CUSTOM ID REQUEST 🔥*\n\n`;
-            message += `👤 *Customer Name:* ${name}\n`;
-            message += `📱 *WhatsApp:* ${whatsapp}\n`;
-            message += `💰 *Budget Range:* ₹${budget}\n`;
-            message += `⭐ *Account Level:* ${level}\n`;
-            message += `🤝 *Deal Mode:* ${dealMode}\n`;
+            // Construct Message Template
+            let message = `🔥 NEW CUSTOM ID REQUEST 🔥\n\n`;
+            message += `👤 Customer Name: ${name}\n`;
+            message += `📱 Contact WhatsApp: ${whatsapp}\n`;
+            message += `💰 Budget Range: ₹${budget}\n`;
+            message += `⭐ Account Level: ${level}\n`;
+            message += `🤝 Deal Mode: ${dealMode}\n`;
             
             if (dealMode === 'Offline Meeting in Patna' && location) {
-                message += `📍 *Meeting Location (Patna):* ${location}\n`;
+                message += `📍 Meeting Location (Patna): ${location}\n`;
             }
             
             if (requirements) {
-                message += `🔫 *Requirements/Rare Items:* ${requirements}\n`;
+                message += `🔫 Requirements/Rare Items: ${requirements}\n`;
             } else {
-                message += `🔫 *Requirements:* Any good account in budget\n`;
+                message += `🔫 Requirements: Any good account in budget\n`;
             }
             
-            message += `\n_Submitted via Thilak Store Web Store._`;
+            message += `\nSubmitted via Thilak Store Web Store.`;
 
-            // URL Encode text
-            const encodedText = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappAgencyNumber}?text=${encodedText}`;
-
-            // Open WhatsApp in a new window/tab
-            window.open(whatsappUrl, '_blank');
+            // Open Instagram DM with copied details
+            const instagramDmUrl = 'https://ig.me/m/thilak.store';
+            handleInstagramRedirect(message, instagramDmUrl);
 
             // Close dialog
             const parentDialog = customIdForm.closest('dialog');
@@ -188,7 +184,222 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. Scroll-Reveal Animation using IntersectionObserver
+    // 7. Toast Notification & Clipboard Instagram Redirection System
+    function showToast(message, isSuccess = true) {
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${isSuccess ? 'toast-success' : ''}`;
+        
+        const iconName = isSuccess ? 'check-circle' : 'copy';
+        toast.innerHTML = `
+            <i data-lucide="${iconName}"></i>
+            <span>${message}</span>
+        `;
+
+        container.appendChild(toast);
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3500);
+    }
+
+    function handleInstagramRedirect(message, redirectUrl) {
+        navigator.clipboard.writeText(message)
+            .then(() => {
+                showToast('Details copied to clipboard! Paste them in the DM chat.', true);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Redirecting to Instagram DM...', false);
+            });
+
+        window.open(redirectUrl, '_blank');
+    }
+
+    // 8. Reusable functions for Instagram DM Order Flow
+    function generateInstagramOrderMessage(product) {
+        let message = `Hello, I want to buy this Free Fire ID.\n\n`;
+        message += `ID Name: ${product.title}\n`;
+        message += `Price: ₹${product.price}\n`;
+        message += `Level: ${product.level}\n`;
+        message += `Rank: ${product.rank}\n`;
+        message += `Skins: ${product.skins}\n`;
+        message += `Product Image: ${product.absoluteImage}\n`;
+        message += `Product Link: ${product.url}\n\n`;
+        message += `Please share more details.`;
+        return message;
+    }
+
+    function generateInstagramDMLink(product) {
+        const instagramUsername = "thilak.store";
+        if (product && product.title) {
+            // Clean up title to be a valid ref payload (alphanumeric and underscores only, max 2083 chars)
+            const cleanRef = product.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 100);
+            return `https://ig.me/m/${instagramUsername}?ref=${cleanRef}`;
+        }
+        return `https://ig.me/m/${instagramUsername}`;
+    }
+
+    // Initialize Instagram Business order modal elements and state
+    const orderModal = document.getElementById('instagram-order-modal');
+    const copyMsgBtn = orderModal ? orderModal.querySelector('.copy-order-msg-btn') : null;
+    const openChatBtn = orderModal ? orderModal.querySelector('.open-instagram-chat-btn') : null;
+    let currentOrderMessage = '';
+    let currentProduct = null;
+
+    // Click handler for all Buy/Checkout buttons (.buy-now-btn)
+    const buyButtons = document.querySelectorAll('.buy-now-btn');
+    buyButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Extract account details from the button data-attributes
+            const title = btn.getAttribute('data-title');
+            const price = btn.getAttribute('data-price');
+            const level = btn.getAttribute('data-level');
+            const rank = btn.getAttribute('data-rank');
+            const skins = btn.getAttribute('data-skins');
+            const imageFile = btn.getAttribute('data-image') || 'assets/sakura.png';
+            const productLinkFile = btn.getAttribute('data-product-link') || 'index.html';
+
+            // Construct absolute URLs for images and redirection pages
+            const pathname = window.location.pathname;
+            const dir = pathname.substring(0, pathname.lastIndexOf('/'));
+            const absoluteImageUrl = window.location.origin + dir + '/' + imageFile;
+            const absoluteProductLink = window.location.origin + dir + '/' + productLinkFile;
+
+            const product = { 
+                title, 
+                price, 
+                level, 
+                rank, 
+                skins, 
+                image: imageFile, 
+                absoluteImage: absoluteImageUrl,
+                url: absoluteProductLink 
+            };
+            currentProduct = product;
+            currentOrderMessage = generateInstagramOrderMessage(product);
+
+            // Populate the modal dynamically
+            if (orderModal) {
+                document.getElementById('order-modal-img').src = imageFile;
+                document.getElementById('order-modal-img').alt = title;
+                document.getElementById('order-modal-title').textContent = title;
+                document.getElementById('order-modal-price').textContent = `₹${price}`;
+                document.getElementById('order-modal-level').textContent = level;
+                document.getElementById('order-modal-rank').textContent = rank;
+                document.getElementById('order-modal-skins').textContent = skins;
+                document.getElementById('order-modal-message-text').textContent = currentOrderMessage;
+
+                // Show modal
+                orderModal.showModal();
+            }
+        });
+    });
+
+    // Modal action: Copy message
+    if (copyMsgBtn) {
+        copyMsgBtn.addEventListener('click', () => {
+            if (currentOrderMessage) {
+                navigator.clipboard.writeText(currentOrderMessage)
+                    .then(() => {
+                        // Change button text and style dynamically
+                        const originalHTML = copyMsgBtn.innerHTML;
+                        copyMsgBtn.innerHTML = `<i data-lucide="check"></i> Copied!`;
+                        copyMsgBtn.style.borderColor = 'var(--clr-success)';
+                        copyMsgBtn.style.color = 'var(--clr-success)';
+                        
+                        // Add glow highlight to the Open Chat button
+                        if (openChatBtn) {
+                            openChatBtn.classList.add('btn-glow');
+                        }
+
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+
+                        showToast('Order details copied! Paste them in the chat.', true);
+
+                        // Reset button style after 3 seconds
+                        setTimeout(() => {
+                            copyMsgBtn.innerHTML = originalHTML;
+                            copyMsgBtn.style.borderColor = '';
+                            copyMsgBtn.style.color = '';
+                            if (typeof lucide !== 'undefined') {
+                                lucide.createIcons();
+                            }
+                        }, 3000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        showToast('Failed to copy. Please select and copy text manually.', false);
+                    });
+            }
+        });
+    }
+
+    // Modal action: Open Instagram Chat
+    if (openChatBtn) {
+        openChatBtn.addEventListener('click', () => {
+            // Automatically copy to clipboard in case they skipped step 1
+            if (currentOrderMessage) {
+                navigator.clipboard.writeText(currentOrderMessage)
+                    .then(() => {
+                        showToast('Order details copied! Paste them in the chat.', true);
+                    })
+                    .catch(err => {
+                        console.error('Auto-copy failed: ', err);
+                    });
+            }
+            const instagramLink = generateInstagramDMLink(currentProduct);
+            window.open(instagramLink, '_blank');
+        });
+    }
+
+    // Support, chat, and offline booking buttons redirection
+    const instagramOfflineBtn = document.querySelector('.instagram-offline-btn');
+    if (instagramOfflineBtn) {
+        instagramOfflineBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const msg = `Hi Thilak Store, I want to book a face-to-face offline deal in Patna.`;
+            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'Offline_Deal' }));
+        });
+    }
+
+    const instagramChatBtns = document.querySelectorAll('.instagram-chat-btn');
+    instagramChatBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const msg = `Hi Thilak Store, I want to buy a Free Fire ID.`;
+            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'General_Chat' }));
+        });
+    });
+
+    const instagramSupportBtns = document.querySelectorAll('.instagram-support-btn');
+    instagramSupportBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const msg = `Hi, I need help securing my Free Fire account.`;
+            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'Support_Help' }));
+        });
+    });
+
+    // 9. Scroll-Reveal Animation using IntersectionObserver
     const revealElements = document.querySelectorAll('.scroll-reveal');
 
     if ('IntersectionObserver' in window) {
@@ -218,3 +429,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

@@ -1729,6 +1729,14 @@ img { max-width: 100%; display: block; }
     .burger { display: flex; }
     .mob-menu { display: flex; }
 
+    .sec {
+        padding: 4.5rem 0;
+    }
+    
+    .sec-head {
+        margin-bottom: 2.5rem;
+    }
+
     .hero-inner {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1759,36 +1767,420 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 520px) {
-    .hero-h1 { font-size: clamp(2rem, 9vw, 3rem); }
+    html {
+        font-size: 15px;
+    }
+
+    .sec {
+        padding: 3.5rem 0;
+    }
+
+    .sec-banner {
+        padding: 3rem 0;
+    }
+
+    .sec-head {
+        margin-bottom: 2rem;
+    }
+
+    .sec-title {
+        font-size: 1.8rem;
+    }
+
+    .sec-sub {
+        font-size: 0.9rem;
+    }
+
+    /* Navbar */
+    .nav-logo-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nav-brand-name {
+        font-size: 0.95rem;
+    }
+
+    /* Hero */
+    .hero {
+        padding-top: 60px;
+    }
+
+    .hero-inner {
+        padding: 40px 0 60px;
+        gap: 30px;
+    }
+
+    .hero-badge {
+        margin-bottom: 1.2rem;
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+
+    .hero-h1 {
+        font-size: clamp(2rem, 8.5vw, 2.8rem);
+        margin-bottom: 1rem;
+    }
+
+    .hero-p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin-bottom: 1.8rem;
+    }
 
     .hero-btns, .banner-btns {
         flex-direction: column;
         width: 100%;
+        gap: 8px;
     }
 
-    .hero-btns a, .banner-btns a { width: 100%; justify-content: center; }
+    .hero-btns a, .banner-btns a {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 24px;
+        font-size: 0.8rem;
+    }
 
     .hero-logo-img {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
     }
 
-    .grid { grid-template-columns: 1fr; }
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-    .form-2col, .radio-row { grid-template-columns: 1fr; }
+    .stat-divider { display: none; }
 
-    .c-form { padding: 24px; }
-    .modal-box { padding: 24px; }
+    .stat {
+        text-align: center;
+        align-items: center;
+    }
 
-    .prod-preview { grid-template-columns: 1fr; }
-    .prod-img-box { height: 140px; }
+    .stat-num, .stat-plus {
+        font-size: 1.4rem;
+    }
 
-    .faq-question { padding: 16px; }
-    .faq-answer p { padding: 0 16px 16px; }
+    .stat-label {
+        font-size: 0.65rem;
+    }
 
-    .toast-box { left: 16px; right: 16px; bottom: 16px; }
-    .toast { width: 100%; justify-content: center; }
+    /* Store Grid & Cards */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 
-    .footer-links { flex-direction: column; gap: 12px; }
-    .footer-meta { flex-direction: column; gap: 6px; }
+    .p-card-img {
+        height: 190px;
+    }
+
+    .p-card-body {
+        padding: 16px;
+    }
+
+    .p-specs {
+        margin-bottom: 12px;
+    }
+
+    .p-foot {
+        padding-top: 10px;
+    }
+
+    .p-price {
+        font-size: 1.15rem;
+    }
+
+    .btn-sm-dark {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+
+    .cta-card-inner {
+        padding: 24px 16px;
+    }
+
+    .cta-card-inner h3 {
+        font-size: 1rem;
+    }
+
+    .cta-card-inner p {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+    }
+
+    .open-custom-btn {
+        padding: 12px 24px;
+        font-size: 0.8rem;
+    }
+
+    /* Services Section */
+    .svc-card {
+        padding: 20px 16px;
+    }
+
+    .svc-num {
+        font-size: 2.2rem;
+        margin-bottom: 12px;
+    }
+
+    .svc-icon {
+        width: 38px;
+        height: 38px;
+        margin-bottom: 14px;
+    }
+
+    .svc-card h3 {
+        font-size: 1.05rem;
+        margin-bottom: 6px;
+    }
+
+    .svc-card p {
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+
+    .escrow-badge-card {
+        min-height: 280px;
+        padding: 24px;
+    }
+
+    .escrow-badge-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 8px;
+    }
+
+    .escrow-badge-card p {
+        font-size: 0.82rem;
+        line-height: 1.5;
+        margin-bottom: 18px;
+    }
+
+    /* Events Section */
+    .events-stack {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .event-card {
+        padding: 20px;
+    }
+
+    .event-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+    }
+
+    .event-card p {
+        font-size: 0.82rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    .event-card .event-details {
+        margin-bottom: 16px;
+        padding: 12px 0;
+        gap: 8px;
+    }
+
+    .event-card .ev-row {
+        font-size: 0.78rem;
+    }
+
+    .event-card .event-cta {
+        margin-top: 8px;
+        gap: 12px;
+    }
+
+    .event-card .prize,
+    .event-card .entry-fee {
+        font-size: 0.85rem;
+    }
+
+    /* Reviews Section */
+    .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .review-card {
+        padding: 20px;
+    }
+
+    .stars {
+        margin-bottom: 12px;
+    }
+
+    .review-text {
+        font-size: 0.85rem;
+        margin-bottom: 16px;
+        line-height: 1.55;
+    }
+
+    .reviewer {
+        padding-top: 12px;
+    }
+
+    .rev-name {
+        font-size: 0.85rem;
+    }
+
+    .rev-loc {
+        font-size: 0.7rem;
+    }
+
+    /* FAQs */
+    .faq-accordion {
+        gap: 12px;
+    }
+
+    .faq-question {
+        padding: 14px 16px;
+    }
+
+    .faq-question span {
+        font-size: 0.95rem;
+    }
+
+    .faq-answer p {
+        padding: 0 16px 14px;
+        font-size: 0.85rem;
+        line-height: 1.55;
+    }
+
+    /* Contact Form & Info */
+    .form-2col, .radio-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .info-item {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .info-item p {
+        font-size: 0.82rem;
+    }
+
+    .c-form {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .field input, .field select, .field textarea {
+        font-size: 0.85rem;
+        padding: 8px 0;
+    }
+
+    /* Modal dialogs */
+    .modal {
+        width: 94vw;
+        border-radius: var(--r);
+    }
+
+    .modal-box {
+        padding: 20px;
+    }
+
+    .modal-top h3 {
+        font-size: 1.1rem;
+    }
+
+    .modal-sub {
+        font-size: 0.78rem;
+        margin-bottom: 16px;
+    }
+
+    .modal-form {
+        gap: 12px;
+    }
+
+    .r-card span {
+        padding: 9px;
+        font-size: 0.8rem;
+    }
+
+    .prod-preview {
+        grid-template-columns: 80px 1fr;
+        gap: 12px;
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+
+    .prod-img-box {
+        height: 70px;
+    }
+
+    .prod-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .prod-price {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .prod-specs {
+        font-size: 0.72rem;
+    }
+
+    .modal-btns {
+        margin-top: 4px;
+        padding-top: 12px;
+        gap: 8px;
+    }
+
+    .modal-btns button {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+
+    /* Toasts */
+    .toast-box {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .toast {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 16px;
+        font-size: 0.78rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 3rem 0 2rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 360px) {
+    html {
+        font-size: 14px;
+    }
+
+    .hero-h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero-logo-img {
+        width: 130px;
+        height: 130px;
+    }
 }

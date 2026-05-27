@@ -1,432 +1,328 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize Lucide Icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    // Init Lucide
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const IG = 'thilak.store';
+
+    // ── Navbar scroll ──
+    const navHeader = document.getElementById('navHeader');
+    const heroSection = document.querySelector('.hero');
+
+    function onScroll() {
+        if (window.scrollY > 60) {
+            navHeader.classList.add('scrolled');
+        } else {
+            navHeader.classList.remove('scrolled');
+        }
     }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    // 2. Mobile Navigation Drawer Toggle
-    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const navLinksItems = document.querySelectorAll('.nav-link');
+    // ── Burger menu ──
+    const burger = document.getElementById('burger');
+    const mobMenu = document.getElementById('mobMenu');
+    const mobLinks = document.querySelectorAll('.mob-link');
 
-    if (mobileNavToggle && navLinks) {
-        mobileNavToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            const icon = mobileNavToggle.querySelector('i');
-            if (icon) {
-                if (navLinks.classList.contains('active')) {
-                    icon.setAttribute('data-lucide', 'x');
-                } else {
-                    icon.setAttribute('data-lucide', 'menu');
-                }
-                lucide.createIcons({ attrs: { class: 'lucide-icon' } });
-            }
-        });
-
-        // Close mobile drawer when clicking a link
-        navLinksItems.forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = mobileNavToggle.querySelector('i');
-                if (icon) {
-                    icon.setAttribute('data-lucide', 'menu');
-                    lucide.createIcons();
-                }
-            });
-        });
-    }
-
-    // 3. Catalog Category Filtering
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const idCards = document.querySelectorAll('.id-card');
-
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            idCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-
-                if (filterValue === 'all') {
-                    card.classList.remove('hidden');
-                } else if (cardCategory === filterValue) {
-                    card.classList.remove('hidden');
-                } else {
-                    // Custom Scouter card should always remain visible at the end of "All" but can be filtered
-                    if (card.classList.contains('card-custom-req') && filterValue !== 'all') {
-                        card.classList.add('hidden');
-                    } else if (card.classList.contains('card-custom-req') && filterValue === 'all') {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                }
-            });
-        });
-    });
-
-    // 4. Modal Dialog Native & Fallback Control
-    const dialogTriggers = document.querySelectorAll('[commandfor]');
-    
-    dialogTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            const targetId = trigger.getAttribute('commandfor');
-            const command = trigger.getAttribute('command');
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement && targetElement.tagName === 'DIALOG') {
-                e.preventDefault();
-                if (command === 'show-modal') {
-                    targetElement.showModal();
-                } else if (command === 'close') {
-                    targetElement.close();
-                }
-            }
-        });
-    });
-
-    // Close Dialog by clicking outside (on backdrop)
-    const dialogs = document.querySelectorAll('dialog');
-    dialogs.forEach(dialog => {
-        dialog.addEventListener('click', (e) => {
-            const rect = dialog.getBoundingClientRect();
-            const isInDialog = (
-                rect.top <= e.clientY &&
-                e.clientY <= rect.top + rect.height &&
-                rect.left <= e.clientX &&
-                e.clientX <= rect.left + rect.width
-            );
-            if (!isInDialog) {
-                dialog.close();
-            }
-        });
-    });
-
-    // 5. Conditional Form Fields (Show Location for Patna Offline Deal)
-    const dealTypeRadios = document.querySelectorAll('input[name="deal_type"]');
-    const locationField = document.getElementById('location-field');
-    const locationInput = document.getElementById('user-location');
-
-    dealTypeRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.value === 'Offline Meeting in Patna') {
-                locationField.style.display = 'flex';
-                locationInput.setAttribute('required', 'true');
+    if (burger && mobMenu) {
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('open');
+            mobMenu.classList.toggle('open');
+            document.body.style.overflow = mobMenu.classList.contains('open') ? 'hidden' : '';
+            // When mobile menu opens, force scrolled style on nav
+            if (mobMenu.classList.contains('open')) {
+                navHeader.classList.add('scrolled');
             } else {
-                locationField.style.display = 'none';
-                locationInput.removeAttribute('required');
+                onScroll();
             }
         });
-    });
 
-    // 6. Custom ID Request - Form Submit to Instagram Prefill Formatter
-    const customIdForm = document.getElementById('custom-id-form');
-
-    if (customIdForm) {
-        customIdForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Fetch Form Data
-            const name = document.getElementById('user-name').value.trim();
-            const whatsapp = document.getElementById('user-whatsapp').value.trim();
-            const budget = document.getElementById('user-budget').value;
-            const level = document.getElementById('user-level').value;
-            
-            let dealMode = 'Online Delivery';
-            dealTypeRadios.forEach(radio => {
-                if (radio.checked) {
-                    dealMode = radio.value;
-                }
-            });
-
-            const location = locationInput.value.trim();
-            const requirements = document.getElementById('user-requirements').value.trim();
-
-            // Construct Message Template
-            let message = `🔥 NEW CUSTOM ID REQUEST 🔥\n\n`;
-            message += `👤 Customer Name: ${name}\n`;
-            message += `📱 Contact WhatsApp: ${whatsapp}\n`;
-            message += `💰 Budget Range: ₹${budget}\n`;
-            message += `⭐ Account Level: ${level}\n`;
-            message += `🤝 Deal Mode: ${dealMode}\n`;
-            
-            if (dealMode === 'Offline Meeting in Patna' && location) {
-                message += `📍 Meeting Location (Patna): ${location}\n`;
-            }
-            
-            if (requirements) {
-                message += `🔫 Requirements/Rare Items: ${requirements}\n`;
-            } else {
-                message += `🔫 Requirements: Any good account in budget\n`;
-            }
-            
-            message += `\nSubmitted via Thilak Store Web Store.`;
-
-            // Open Instagram DM with copied details
-            const instagramDmUrl = 'https://ig.me/m/thilak.store';
-            handleInstagramRedirect(message, instagramDmUrl);
-
-            // Close dialog
-            const parentDialog = customIdForm.closest('dialog');
-            if (parentDialog) {
-                parentDialog.close();
-            }
-
-            // Reset form
-            customIdForm.reset();
-            locationField.style.display = 'none';
-            locationInput.removeAttribute('required');
-        });
-    }
-
-    // 7. Toast Notification & Clipboard Instagram Redirection System
-    function showToast(message, isSuccess = true) {
-        let container = document.querySelector('.toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-        }
-
-        const toast = document.createElement('div');
-        toast.className = `toast ${isSuccess ? 'toast-success' : ''}`;
-        
-        const iconName = isSuccess ? 'check-circle' : 'copy';
-        toast.innerHTML = `
-            <i data-lucide="${iconName}"></i>
-            <span>${message}</span>
-        `;
-
-        container.appendChild(toast);
-
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-
-        setTimeout(() => {
-            toast.classList.add('fade-out');
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }, 3500);
-    }
-
-    function handleInstagramRedirect(message, redirectUrl) {
-        navigator.clipboard.writeText(message)
-            .then(() => {
-                showToast('Details copied to clipboard! Paste them in the DM chat.', true);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-                showToast('Redirecting to Instagram DM...', false);
-            });
-
-        window.open(redirectUrl, '_blank');
-    }
-
-    // 8. Reusable functions for Instagram DM Order Flow
-    function generateInstagramOrderMessage(product) {
-        let message = `Hello, I want to buy this Free Fire ID.\n\n`;
-        message += `ID Name: ${product.title}\n`;
-        message += `Price: ₹${product.price}\n`;
-        message += `Level: ${product.level}\n`;
-        message += `Rank: ${product.rank}\n`;
-        message += `Skins: ${product.skins}\n`;
-        message += `Product Image: ${product.absoluteImage}\n`;
-        message += `Product Link: ${product.url}\n\n`;
-        message += `Please share more details.`;
-        return message;
-    }
-
-    function generateInstagramDMLink(product) {
-        const instagramUsername = "thilak.store";
-        if (product && product.title) {
-            // Clean up title to be a valid ref payload (alphanumeric and underscores only, max 2083 chars)
-            const cleanRef = product.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 100);
-            return `https://ig.me/m/${instagramUsername}?ref=${cleanRef}`;
-        }
-        return `https://ig.me/m/${instagramUsername}`;
-    }
-
-    // Initialize Instagram Business order modal elements and state
-    const orderModal = document.getElementById('instagram-order-modal');
-    const copyMsgBtn = orderModal ? orderModal.querySelector('.copy-order-msg-btn') : null;
-    const openChatBtn = orderModal ? orderModal.querySelector('.open-instagram-chat-btn') : null;
-    let currentOrderMessage = '';
-    let currentProduct = null;
-
-    // Click handler for all Buy/Checkout buttons (.buy-now-btn)
-    const buyButtons = document.querySelectorAll('.buy-now-btn');
-    buyButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            // Extract account details from the button data-attributes
-            const title = btn.getAttribute('data-title');
-            const price = btn.getAttribute('data-price');
-            const level = btn.getAttribute('data-level');
-            const rank = btn.getAttribute('data-rank');
-            const skins = btn.getAttribute('data-skins');
-            const imageFile = btn.getAttribute('data-image') || 'assets/sakura.png';
-            const productLinkFile = btn.getAttribute('data-product-link') || 'index.html';
-
-            // Construct absolute URLs for images and redirection pages
-            const pathname = window.location.pathname;
-            const dir = pathname.substring(0, pathname.lastIndexOf('/'));
-            const absoluteImageUrl = window.location.origin + dir + '/' + imageFile;
-            const absoluteProductLink = window.location.origin + dir + '/' + productLinkFile;
-
-            const product = { 
-                title, 
-                price, 
-                level, 
-                rank, 
-                skins, 
-                image: imageFile, 
-                absoluteImage: absoluteImageUrl,
-                url: absoluteProductLink 
-            };
-            currentProduct = product;
-            currentOrderMessage = generateInstagramOrderMessage(product);
-
-            // Populate the modal dynamically
-            if (orderModal) {
-                document.getElementById('order-modal-img').src = imageFile;
-                document.getElementById('order-modal-img').alt = title;
-                document.getElementById('order-modal-title').textContent = title;
-                document.getElementById('order-modal-price').textContent = `₹${price}`;
-                document.getElementById('order-modal-level').textContent = level;
-                document.getElementById('order-modal-rank').textContent = rank;
-                document.getElementById('order-modal-skins').textContent = skins;
-                document.getElementById('order-modal-message-text').textContent = currentOrderMessage;
-
-                // Show modal
-                orderModal.showModal();
-            }
-        });
-    });
-
-    // Modal action: Copy message
-    if (copyMsgBtn) {
-        copyMsgBtn.addEventListener('click', () => {
-            if (currentOrderMessage) {
-                navigator.clipboard.writeText(currentOrderMessage)
-                    .then(() => {
-                        // Change button text and style dynamically
-                        const originalHTML = copyMsgBtn.innerHTML;
-                        copyMsgBtn.innerHTML = `<i data-lucide="check"></i> Copied!`;
-                        copyMsgBtn.style.borderColor = 'var(--clr-success)';
-                        copyMsgBtn.style.color = 'var(--clr-success)';
-                        
-                        // Add glow highlight to the Open Chat button
-                        if (openChatBtn) {
-                            openChatBtn.classList.add('btn-glow');
-                        }
-
-                        if (typeof lucide !== 'undefined') {
-                            lucide.createIcons();
-                        }
-
-                        showToast('Order details copied! Paste them in the chat.', true);
-
-                        // Reset button style after 3 seconds
-                        setTimeout(() => {
-                            copyMsgBtn.innerHTML = originalHTML;
-                            copyMsgBtn.style.borderColor = '';
-                            copyMsgBtn.style.color = '';
-                            if (typeof lucide !== 'undefined') {
-                                lucide.createIcons();
-                            }
-                        }, 3000);
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                        showToast('Failed to copy. Please select and copy text manually.', false);
-                    });
-            }
-        });
-    }
-
-    // Modal action: Open Instagram Chat
-    if (openChatBtn) {
-        openChatBtn.addEventListener('click', () => {
-            // Automatically copy to clipboard in case they skipped step 1
-            if (currentOrderMessage) {
-                navigator.clipboard.writeText(currentOrderMessage)
-                    .then(() => {
-                        showToast('Order details copied! Paste them in the chat.', true);
-                    })
-                    .catch(err => {
-                        console.error('Auto-copy failed: ', err);
-                    });
-            }
-            const instagramLink = generateInstagramDMLink(currentProduct);
-            window.open(instagramLink, '_blank');
-        });
-    }
-
-    // Support, chat, and offline booking buttons redirection
-    const instagramOfflineBtn = document.querySelector('.instagram-offline-btn');
-    if (instagramOfflineBtn) {
-        instagramOfflineBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const msg = `Hi Thilak Store, I want to book a face-to-face offline deal in Patna.`;
-            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'Offline_Deal' }));
-        });
-    }
-
-    const instagramChatBtns = document.querySelectorAll('.instagram-chat-btn');
-    instagramChatBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const msg = `Hi Thilak Store, I want to buy a Free Fire ID.`;
-            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'General_Chat' }));
-        });
-    });
-
-    const instagramSupportBtns = document.querySelectorAll('.instagram-support-btn');
-    instagramSupportBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const msg = `Hi, I need help securing my Free Fire account.`;
-            handleInstagramRedirect(msg, generateInstagramDMLink({ title: 'Support_Help' }));
-        });
-    });
-
-    // 9. Scroll-Reveal Animation using IntersectionObserver
-    const revealElements = document.querySelectorAll('.scroll-reveal');
-
-    if ('IntersectionObserver' in window) {
-        const observerOptions = {
-            root: null, // Viewport
-            rootMargin: '0px',
-            threshold: 0.1 // Triggers when 10% of element is visible
+        const closeMob = () => {
+            burger.classList.remove('open');
+            mobMenu.classList.remove('open');
+            document.body.style.overflow = '';
+            onScroll();
         };
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    // Once revealed, no need to track it further
-                    observer.unobserve(entry.target);
+        mobLinks.forEach(l => l.addEventListener('click', closeMob));
+    }
+
+    // ── Filters ──
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.p-card[data-category]');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const f = chip.dataset.filter;
+            cards.forEach(card => {
+                if (f === 'all' || card.dataset.category === f) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
                 }
             });
-        }, observerOptions);
-
-        revealElements.forEach(element => {
-            observer.observe(element);
         });
-    } else {
-        // Fallback for older browsers: show elements immediately
-        revealElements.forEach(element => {
-            element.classList.add('revealed');
+    });
+
+    // ── Modal helpers ──
+    const customModal = document.getElementById('customModal');
+    const productModal = document.getElementById('productModal');
+
+    function openModal(modal) {
+        if (modal) modal.showModal();
+    }
+
+    function closeModal(modal) {
+        if (modal) modal.close();
+    }
+
+    // Close on backdrop
+    [customModal, productModal].forEach(m => {
+        if (!m) return;
+        m.addEventListener('click', e => {
+            const r = m.getBoundingClientRect();
+            if (e.clientY < r.top || e.clientY > r.bottom || e.clientX < r.left || e.clientX > r.right) {
+                m.close();
+            }
+        });
+    });
+
+    // Custom modal triggers
+    const openCustomBtns = [
+        document.getElementById('openCustomSearch'),
+        document.getElementById('mobCustomSearch'),
+        ...document.querySelectorAll('.open-custom-btn')
+    ].filter(Boolean);
+
+    openCustomBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Close mobile menu if open
+            if (mobMenu && mobMenu.classList.contains('open')) {
+                burger.classList.remove('open');
+                mobMenu.classList.remove('open');
+                document.body.style.overflow = '';
+                onScroll();
+            }
+            openModal(customModal);
+        });
+    });
+
+    document.getElementById('closeCustom')?.addEventListener('click', () => closeModal(customModal));
+    document.getElementById('cancelCustom')?.addEventListener('click', () => closeModal(customModal));
+    document.getElementById('closeProduct')?.addEventListener('click', () => closeModal(productModal));
+
+    // ── Deal type toggle ──
+    const dealRadios = document.querySelectorAll('input[name="deal_type"]');
+    const locField = document.getElementById('locationField');
+    const locInput = document.getElementById('user-location');
+
+    dealRadios.forEach(r => {
+        r.addEventListener('change', () => {
+            if (r.value === 'Offline Meeting in Patna') {
+                if (locField) locField.style.display = 'flex';
+                if (locInput) locInput.required = true;
+            } else {
+                if (locField) locField.style.display = 'none';
+                if (locInput) { locInput.required = false; locInput.value = ''; }
+            }
+        });
+    });
+
+    // ── Toast ──
+    function toast(msg, ok = true) {
+        const box = document.getElementById('toastBox');
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = `<i data-lucide="${ok ? 'check-circle' : 'copy'}"></i><span>${msg}</span>`;
+        box.appendChild(t);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3000);
+    }
+
+    // ── Clipboard + IG redirect ──
+    function goIG(msg, url) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(msg)
+                .then(() => toast('Copied to clipboard!'))
+                .catch(() => toast('Redirecting...', false));
+        } else {
+            toast('Redirecting...', false);
+        }
+        setTimeout(() => window.open(url, '_blank'), 800);
+    }
+
+    function dmLink(ref) {
+        const r = ref ? ref.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 80) : '';
+        return r ? `https://ig.me/m/${IG}?ref=${r}` : `https://ig.me/m/${IG}`;
+    }
+
+    // ── Custom form submit ──
+    const customForm = document.getElementById('customForm');
+    if (customForm) {
+        customForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const n = document.getElementById('user-name').value.trim();
+            const w = document.getElementById('user-whatsapp').value.trim();
+            const b = document.getElementById('user-budget').value;
+            const l = document.getElementById('user-level').value;
+            let d = 'Online Delivery';
+            dealRadios.forEach(r => { if (r.checked) d = r.value; });
+            const loc = locInput ? locInput.value.trim() : '';
+            const req = document.getElementById('user-requirements').value.trim();
+
+            let m = `🔥 CUSTOM ID REQUEST 🔥\n\n`;
+            m += `👤 ${n}\n📱 ${w}\n💰 ₹${b}\n⭐ Level: ${l}\n🤝 ${d}\n`;
+            if (d === 'Offline Meeting in Patna' && loc) m += `📍 ${loc}\n`;
+            m += req ? `🔫 ${req}\n` : `🔫 Any good account\n`;
+            m += `\nvia thilak.store`;
+
+            goIG(m, dmLink('custom'));
+            closeModal(customModal);
+            customForm.reset();
+            if (locField) locField.style.display = 'none';
+            if (locInput) locInput.required = false;
         });
     }
-});
 
+    // ── Product enquiry ──
+    let orderMsg = '';
+    let orderTitle = '';
+
+    const copyBtn = productModal?.querySelector('.copy-msg-btn');
+    const chatBtn = productModal?.querySelector('.open-ig-btn');
+
+    document.querySelectorAll('.buy-now-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            const { title, price, level, rank, skins } = btn.dataset;
+            const img = btn.dataset.image || 'assets/sakura.png';
+            const link = btn.dataset.productLink || 'index.html';
+            const base = location.origin + location.pathname.replace(/\/[^/]*$/, '/');
+
+            orderTitle = title;
+            orderMsg = `Hello thilak.store!\n\nID: ${title}\nPrice: ₹${price}\nLevel: ${level}\nRank: ${rank}\nSkins: ${skins}\nImage: ${base}${img}\nLink: ${base}${link}\n\nPlease share screenshots.`;
+
+            if (productModal) {
+                const $ = id => document.getElementById(id);
+                const imgEl = $('orderImg');
+                if (imgEl) { imgEl.src = img; imgEl.alt = title; }
+                $('orderTitle').textContent = title;
+                $('orderPrice').textContent = `₹${price}`;
+                $('orderLevel').textContent = level;
+                $('orderRank').textContent = rank;
+                $('orderSkins').textContent = skins;
+                $('orderMsg').textContent = orderMsg;
+                openModal(productModal);
+            }
+        });
+    });
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            if (!orderMsg) return;
+            navigator.clipboard.writeText(orderMsg)
+                .then(() => { copyBtn.textContent = 'Copied!'; toast('Copied!'); setTimeout(() => copyBtn.textContent = 'Copy Message', 2000); })
+                .catch(() => toast('Failed', false));
+        });
+    }
+
+    if (chatBtn) {
+        chatBtn.addEventListener('click', () => {
+            if (orderMsg) navigator.clipboard.writeText(orderMsg).catch(() => {});
+            toast('Opening Instagram...');
+            setTimeout(() => { window.open(dmLink(orderTitle), '_blank'); closeModal(productModal); }, 500);
+        });
+    }
+
+    // ── Contact form ──
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const n = document.getElementById('name').value.trim();
+            const c = document.getElementById('city').value.trim();
+            const s = document.getElementById('service').value;
+            const m = document.getElementById('message').value.trim();
+
+            const msg = `Hello thilak.store,\n\nName: ${n}\nCity: ${c}\nService: ${s}\nDetails: ${m}\n\nvia thilak.store`;
+            goIG(msg, dmLink(s));
+            contactForm.reset();
+        });
+    }
+
+    // ── Scroll reveal ──
+    const fadeEls = document.querySelectorAll('.fade-in');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        fadeEls.forEach(el => obs.observe(el));
+    } else {
+        fadeEls.forEach(el => el.classList.add('visible'));
+    }
+
+    // ── Random entry fee generation for event cards ──
+    const feeSpans = document.querySelectorAll('.rand-fee');
+    feeSpans.forEach(span => {
+        const fee = Math.floor(Math.random() * 1001) + 500; // ₹500‑₹1500
+        span.textContent = `Entry: ₹${fee}`;
+    });
+
+    // ── FAQ Accordion ──
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        question.addEventListener('click', () => {
+            const isOpen = item.classList.contains('open');
+            // Close other items
+            faqItems.forEach(i => {
+                i.classList.remove('open');
+                i.querySelector('.faq-answer').style.maxHeight = '';
+            });
+            if (!isOpen) {
+                item.classList.add('open');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+
+    // ── Sell Banner Appraisal CTA ──
+    const sellCTABtn = document.getElementById('sellCTABtn');
+    if (sellCTABtn) {
+        sellCTABtn.addEventListener('click', () => {
+            const serviceSelect = document.getElementById('service');
+            if (serviceSelect) {
+                serviceSelect.value = 'Sell Account';
+            }
+        });
+    }
+
+    // ── Counter animation ──
+    const statNums = document.querySelectorAll('.stat-num[data-count]');
+    if ('IntersectionObserver' in window) {
+        const counterObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    const target = parseInt(e.target.dataset.count);
+                    let current = 0;
+                    const step = Math.max(1, Math.floor(target / 60));
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= target) { current = target; clearInterval(timer); }
+                        e.target.textContent = current.toLocaleString();
+                    }, 20);
+                    counterObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        statNums.forEach(el => counterObs.observe(el));
+    }
+});

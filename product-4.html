@@ -80,15 +80,8 @@
         const skins = "95+ Weapon Skins, 50 Emotes";
         const image = "assets/dragon_samurai.png";
         
-        const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
-        const orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\nPlease share more details and screenshots.\n\n🔗 Product Link: ${window.location.href}`;
-
         document.getElementById('buyWA').addEventListener('click', () => {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(orderMsg)
-                    .then(() => toast('Details copied! Opening WhatsApp Channel...'))
-                    .catch(() => toast('Opening WhatsApp Channel...'));
-            }
+            toast('Opening WhatsApp Channel...');
             setTimeout(() => {
                 const url = `https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T`;
                 window.open(url, '_blank');

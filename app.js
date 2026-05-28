@@ -185,10 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Product enquiry ──
-    let orderMsg = '';
     let orderTitle = '';
 
-    const copyBtn = productModal?.querySelector('.copy-msg-btn');
     const chatBtn = productModal?.querySelector('.open-wa-btn');
 
     document.querySelectorAll('.buy-now-btn').forEach(btn => {
@@ -197,11 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             const { title, price, level, rank, skins } = btn.dataset;
             const img = btn.dataset.image || 'assets/sakura.png';
-            const link = btn.dataset.productLink || 'index.html';
-            const base = location.origin + location.pathname.replace(/\/[^/]*$/, '/');
 
             orderTitle = title;
-            orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\nPlease share more details and screenshots.\n\n🔗 Product Link: ${base}${link}`;
 
             if (productModal) {
                 const $ = id => document.getElementById(id);
@@ -212,24 +207,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 $('orderLevel').textContent = level;
                 $('orderRank').textContent = rank;
                 $('orderSkins').textContent = skins;
-                $('orderMsg').textContent = orderMsg;
                 openModal(productModal);
             }
         });
     });
 
-    if (copyBtn) {
-        copyBtn.addEventListener('click', () => {
-            if (!orderMsg) return;
-            navigator.clipboard.writeText(orderMsg)
-                .then(() => { copyBtn.textContent = 'Copied!'; toast('Copied!'); setTimeout(() => copyBtn.textContent = 'Copy Message', 2000); })
-                .catch(() => toast('Failed', false));
-        });
-    }
-
     if (chatBtn) {
         chatBtn.addEventListener('click', () => {
-            if (orderMsg) navigator.clipboard.writeText(orderMsg).catch(() => {});
             toast('Opening WhatsApp Channel...');
             setTimeout(() => { window.open('https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T', '_blank'); closeModal(productModal); }, 500);
         });

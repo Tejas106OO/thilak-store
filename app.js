@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init Lucide
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    const IG = 'thilak.store';
+    const WA_CHANNEL = 'https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T';
 
     // ── Navbar scroll ──
     const navHeader = document.getElementById('navHeader');
@@ -140,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3000);
     }
 
-    // ── Clipboard + IG redirect ──
-    function goIG(msg, url) {
+    // ── Clipboard + WhatsApp redirect ──
+    function goWA(msg, url) {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(msg)
                 .then(() => toast('Copied to clipboard!'))
@@ -152,9 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => window.open(url, '_blank'), 800);
     }
 
-    function dmLink(ref) {
-        const r = ref ? ref.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 80) : '';
-        return r ? `https://ig.me/m/${IG}?ref=${r}` : `https://ig.me/m/${IG}`;
+    function waLink() {
+        return WA_CHANNEL;
     }
 
     // ── Custom form submit ──
@@ -177,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             m += req ? `🔫 ${req}\n` : `🔫 Any good account\n`;
             m += `\nvia thilak.store`;
 
-            goIG(m, dmLink('custom'));
+            goWA(m, waLink());
             closeModal(customModal);
             customForm.reset();
             if (locField) locField.style.display = 'none';
@@ -190,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let orderTitle = '';
 
     const copyBtn = productModal?.querySelector('.copy-msg-btn');
-    const chatBtn = productModal?.querySelector('.open-ig-btn');
+    const chatBtn = productModal?.querySelector('.open-wa-btn');
 
     document.querySelectorAll('.buy-now-btn').forEach(btn => {
         btn.addEventListener('click', e => {
@@ -231,8 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatBtn) {
         chatBtn.addEventListener('click', () => {
             if (orderMsg) navigator.clipboard.writeText(orderMsg).catch(() => {});
-            toast('Opening Instagram...');
-            setTimeout(() => { window.open(dmLink(orderTitle), '_blank'); closeModal(productModal); }, 500);
+            toast('Opening WhatsApp...');
+            setTimeout(() => { window.open(waLink(), '_blank'); closeModal(productModal); }, 500);
         });
     }
 
@@ -247,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = document.getElementById('message').value.trim();
 
             const msg = `Hello thilak.store,\n\nName: ${n}\nCity: ${c}\nService: ${s}\nDetails: ${m}\n\nvia thilak.store`;
-            goIG(msg, dmLink(s));
+            goWA(msg, waLink());
             contactForm.reset();
         });
     }

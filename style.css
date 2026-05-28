@@ -1123,6 +1123,10 @@ img { max-width: 100%; display: block; }
     align-items: start;
 }
 
+.contact-left {
+    padding-top: 36px; /* Align content start with form content start */
+}
+
 .contact-desc {
     font-size: 0.95rem;
     color: var(--text-muted);
@@ -1213,6 +1217,11 @@ img { max-width: 100%; display: block; }
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0 center;
+}
+
+.field select option {
+    background-color: var(--bg-alt);
+    color: var(--white);
 }
 
 .field textarea { resize: vertical; min-height: 70px; }
@@ -1759,6 +1768,10 @@ img { max-width: 100%; display: block; }
     .contact-row {
         grid-template-columns: 1fr;
         gap: 32px;
+    }
+
+    .contact-left {
+        padding-top: 0;
     }
 
     .ev-live { position: static; }

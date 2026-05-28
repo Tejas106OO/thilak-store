@@ -215,7 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatBtn) {
         chatBtn.addEventListener('click', () => {
             toast('Opening WhatsApp Channel...');
-            setTimeout(() => { window.open('https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T', '_blank'); closeModal(productModal); }, 500);
+            window.open('https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T', '_blank');
+            closeModal(productModal);
         });
     }
 

@@ -82,10 +82,8 @@
         
         document.getElementById('buyWA').addEventListener('click', () => {
             toast('Opening WhatsApp Channel...');
-            setTimeout(() => {
-                const url = `https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T`;
-                window.open(url, '_blank');
-            }, 800);
+            const url = `https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T`;
+            window.open(url, '_blank');
         });
     </script>
 </body>

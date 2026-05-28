@@ -44,10 +44,10 @@
             </div>
 
             <div class="preview-btns">
-                <button id="buyWA" class="btn-main" style="width: 100%; gap: 10px;">
+                <a href="https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T" target="_blank" rel="noopener" class="btn-main" style="width: 100%; gap: 10px; display: inline-flex; align-items: center; justify-content: center;">
                     <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
                     Buy on WhatsApp Channel
-                </button>
+                </a>
                 <a href="index.html#store" class="btn-outline-dark" style="width: 100%; text-align: center;">
                     Back to Store
                 </a>
@@ -60,31 +60,6 @@
     <script>
         // Init Lucide
         if (typeof lucide !== 'undefined') lucide.createIcons();
-
-        // Toast helper
-        function toast(msg) {
-            const box = document.getElementById('toastBox');
-            const t = document.createElement('div');
-            t.className = 'toast';
-            t.innerHTML = `<i data-lucide="check-circle"></i><span>${msg}</span>`;
-            box.appendChild(t);
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3000);
-        }
-
-        const WA_PHONE = '918102098935';
-        const title = "White Dragon Samurai Edition";
-        const price = "7,499";
-        const level = "72";
-        const rank = "Heroic (Star 4)";
-        const skins = "95+ Weapon Skins, 50 Emotes";
-        const image = "assets/dragon_samurai.png";
-        
-        document.getElementById('buyWA').addEventListener('click', () => {
-            toast('Opening WhatsApp Channel...');
-            const url = `https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T`;
-            window.open(url, '_blank');
-        });
     </script>
 </body>
 </html>

@@ -184,41 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── Product enquiry ──
-    let orderTitle = '';
-
-    const chatBtn = productModal?.querySelector('.open-wa-btn');
-
-    document.querySelectorAll('.buy-now-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            e.stopPropagation();
-            const { title, price, level, rank, skins } = btn.dataset;
-            const img = btn.dataset.image || 'assets/sakura.png';
-
-            orderTitle = title;
-
-            if (productModal) {
-                const $ = id => document.getElementById(id);
-                const imgEl = $('orderImg');
-                if (imgEl) { imgEl.src = img; imgEl.alt = title; }
-                $('orderTitle').textContent = title;
-                $('orderPrice').textContent = `₹${price}`;
-                $('orderLevel').textContent = level;
-                $('orderRank').textContent = rank;
-                $('orderSkins').textContent = skins;
-                openModal(productModal);
-            }
-        });
-    });
-
-    if (chatBtn) {
-        chatBtn.addEventListener('click', () => {
-            toast('Opening WhatsApp Channel...');
-            window.open('https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T', '_blank');
-            closeModal(productModal);
-        });
-    }
 
     // ── Contact form ──
     const contactForm = document.getElementById('contactForm');

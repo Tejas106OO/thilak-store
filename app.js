@@ -274,4 +274,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.5 });
         statNums.forEach(el => counterObs.observe(el));
     }
+
+    // ── Fallback Click Redirect to WhatsApp Channel ──
+    document.addEventListener('click', e => {
+        const btn = e.target.closest('.buy-now-btn') || e.target.closest('.open-wa-btn') || e.target.closest('#buyWA');
+        if (btn) {
+            e.preventDefault();
+            window.location.href = 'https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T';
+        }
+    });
 });

@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const base = location.origin + location.pathname.replace(/\/[^/]*$/, '/');
 
             orderTitle = title;
-            orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\n🖼️ Image: ${base}${img}\n🔗 Product Link: ${base}${link}\n\nPlease share more details and screenshots.`;
+            orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\nPlease share more details and screenshots.\n\n🔗 Product Link: ${base}${link}`;
 
             if (productModal) {
                 const $ = id => document.getElementById(id);

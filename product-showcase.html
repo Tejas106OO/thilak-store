@@ -8,8 +8,8 @@
     <!-- Open Graph Tags for Social Link Preview -->
     <meta property="og:title" content="Order placed - Sakura + Hip-Hop Bundle">
     <meta property="og:description" content="Price: ₹14,999 | Level: 76 | Rank: Grandmaster | Skins: 6 Maxed Evo Guns. Click to view on Thilak Store.">
-    <meta property="og:image" content="https://thilak.store/assets/sakura.png">
-    <meta property="og:url" content="https://thilak.store/product-showcase.html">
+    <meta property="og:image" content="assets/sakura.png">
+    <meta property="og:url" content="product-showcase.html">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,7 +81,7 @@
         const image = "assets/sakura.png";
         
         const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
-        const orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\n🖼️ Image: ${base}${image}\n🔗 Product Link: ${window.location.href}\n\nPlease share more details and screenshots.`;
+        const orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\nPlease share more details and screenshots.\n\n🔗 Product Link: ${window.location.href}`;
 
         document.getElementById('buyWA').addEventListener('click', () => {
             if (navigator.clipboard) {

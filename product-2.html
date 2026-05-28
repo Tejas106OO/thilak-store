@@ -46,7 +46,7 @@
             <div class="preview-btns">
                 <button id="buyWA" class="btn-main" style="width: 100%; gap: 10px;">
                     <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
-                    Chat on WhatsApp
+                    Buy on WhatsApp Channel
                 </button>
                 <a href="index.html#store" class="btn-outline-dark" style="width: 100%; text-align: center;">
                     Back to Store
@@ -86,11 +86,11 @@
         document.getElementById('buyWA').addEventListener('click', () => {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(orderMsg)
-                    .then(() => toast('Details copied! Opening WhatsApp...'))
-                    .catch(() => toast('Opening WhatsApp...'));
+                    .then(() => toast('Details copied! Opening WhatsApp Channel...'))
+                    .catch(() => toast('Opening WhatsApp Channel...'));
             }
             setTimeout(() => {
-                const url = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(orderMsg)}`;
+                const url = `https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T`;
                 window.open(url, '_blank');
             }, 800);
         });

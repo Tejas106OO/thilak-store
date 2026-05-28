@@ -230,8 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatBtn) {
         chatBtn.addEventListener('click', () => {
             if (orderMsg) navigator.clipboard.writeText(orderMsg).catch(() => {});
-            toast('Opening WhatsApp...');
-            setTimeout(() => { window.open(waLink(orderMsg), '_blank'); closeModal(productModal); }, 500);
+            toast('Opening WhatsApp Channel...');
+            setTimeout(() => { window.open('https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T', '_blank'); closeModal(productModal); }, 500);
         });
     }
 

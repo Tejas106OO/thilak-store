@@ -2,20 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order placed - Golden Demon Warrior Grandmaster</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Golden Demon Warrior Grandmaster - Thilak Store</title>
     
     <!-- Open Graph Tags for Social Link Preview -->
     <meta property="og:title" content="Order placed - Golden Demon Warrior Grandmaster">
     <meta property="og:description" content="Price: ₹3,800 | Level: 69 | Rank: Grandmaster (S35) | Skins: 65+ Weapon Skins. Click to view on Thilak Store.">
     <meta property="og:image" content="https://thilak.store/assets/gold_demon.png">
+    <meta property="og:url" content="https://thilak.store/product-3.html">
     <meta property="og:type" content="website">
-    
-    <!-- Fallback redirect if user clicks on the card -->
-    <script>
-        window.location.href = "index.html#store";
-    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Redirecting to Thilak Store...</p>
+    <main class="preview-container">
+        <div class="preview-card">
+            <img src="assets/gold_demon.png" alt="Golden Demon Warrior Grandmaster" class="preview-hero-img">
+            
+            <div>
+                <h1 class="preview-title">Golden Demon Warrior Grandmaster</h1>
+                <div class="preview-price">₹3,800</div>
+            </div>
+
+            <div class="preview-specs-list">
+                <div class="preview-spec-item">
+                    <span class="preview-spec-label">Level</span>
+                    <span class="preview-spec-val">69</span>
+                </div>
+                <div class="preview-spec-item">
+                    <span class="preview-spec-label">Rank</span>
+                    <span class="preview-spec-val">Grandmaster (S35)</span>
+                </div>
+                <div class="preview-spec-item" style="grid-column: span 2;">
+                    <span class="preview-spec-label">Skins & Details</span>
+                    <span class="preview-spec-val">65+ Weapon Skins</span>
+                </div>
+            </div>
+
+            <div class="preview-btns">
+                <button id="buyWA" class="btn-main" style="width: 100%; gap: 10px;">
+                    <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
+                    Chat on WhatsApp
+                </button>
+                <a href="index.html#store" class="btn-outline-dark" style="width: 100%; text-align: center;">
+                    Back to Store
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast-box" id="toastBox"></div>
+
+    <script>
+        // Init Lucide
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        // Toast helper
+        function toast(msg) {
+            const box = document.getElementById('toastBox');
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.innerHTML = `<i data-lucide="check-circle"></i><span>${msg}</span>`;
+            box.appendChild(t);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        const WA_PHONE = '918102098935';
+        const title = "Golden Demon Warrior Grandmaster";
+        const price = "3,800";
+        const level = "69";
+        const rank = "Grandmaster (S35)";
+        const skins = "65+ Weapon Skins";
+        const image = "assets/gold_demon.png";
+        
+        const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
+        const orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\n🖼️ Image: ${base}${image}\n🔗 Product Link: ${window.location.href}\n\nPlease share more details and screenshots.`;
+
+        document.getElementById('buyWA').addEventListener('click', () => {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(orderMsg)
+                    .then(() => toast('Details copied! Opening WhatsApp...'))
+                    .catch(() => toast('Opening WhatsApp...'));
+            }
+            setTimeout(() => {
+                const url = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(orderMsg)}`;
+                window.open(url, '_blank');
+            }, 800);
+        });
+    </script>
 </body>
 </html>

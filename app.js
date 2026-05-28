@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init Lucide
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    const WA_CHANNEL = 'https://whatsapp.com/channel/0029Vb7mj918qIzzuWZLDc3T';
+    const WA_PHONE = '918102098935';
 
     // ── Navbar scroll ──
     const navHeader = document.getElementById('navHeader');
@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => window.open(url, '_blank'), 800);
     }
 
-    function waLink() {
-        return WA_CHANNEL;
+    function waLink(msg = '') {
+        return msg ? `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}` : `https://wa.me/${WA_PHONE}`;
     }
 
     // ── Custom form submit ──
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             m += req ? `🔫 ${req}\n` : `🔫 Any good account\n`;
             m += `\nvia thilak.store`;
 
-            goWA(m, waLink());
+            goWA(m, waLink(m));
             closeModal(customModal);
             customForm.reset();
             if (locField) locField.style.display = 'none';
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const base = location.origin + location.pathname.replace(/\/[^/]*$/, '/');
 
             orderTitle = title;
-            orderMsg = `Hello thilak.store!\n\nID: ${title}\nPrice: ₹${price}\nLevel: ${level}\nRank: ${rank}\nSkins: ${skins}\nImage: ${base}${img}\nLink: ${base}${link}\n\nPlease share screenshots.`;
+            orderMsg = `Hello Thilak Store 👋\n\nI want to buy this Free Fire ID.\n\n🆔 Product: ${title}\n💰 Price: ₹${price}\n⭐ Level: ${level}\n🏆 Rank: ${rank}\n🎒 Skins: ${skins}\n\n🖼️ Image: ${base}${img}\n🔗 Product Link: ${base}${link}\n\nPlease share more details and screenshots.`;
 
             if (productModal) {
                 const $ = id => document.getElementById(id);
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBtn.addEventListener('click', () => {
             if (orderMsg) navigator.clipboard.writeText(orderMsg).catch(() => {});
             toast('Opening WhatsApp...');
-            setTimeout(() => { window.open(waLink(), '_blank'); closeModal(productModal); }, 500);
+            setTimeout(() => { window.open(waLink(orderMsg), '_blank'); closeModal(productModal); }, 500);
         });
     }
 
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = document.getElementById('message').value.trim();
 
             const msg = `Hello thilak.store,\n\nName: ${n}\nCity: ${c}\nService: ${s}\nDetails: ${m}\n\nvia thilak.store`;
-            goWA(msg, waLink());
+            goWA(msg, waLink(msg));
             contactForm.reset();
         });
     }
